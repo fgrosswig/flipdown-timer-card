@@ -35,8 +35,8 @@ export const styles = css`
   }
   .flipdown.flipdown__theme-hass .btn-top,
   .flipdown.flipdown__theme-hass .btn-bottom {
-    background-color: var(--dark-primary-color);
-    color: var(--text-primary-color);
+    background-color: var(--flip-button-bg, var(--dark-primary-color));
+    color: var(--flip-button-color, var(--text-primary-color));
   }
   /********** Theme: dark **********/
   /* Font styles */
@@ -147,7 +147,8 @@ export const styles = css`
 
   .flipdown {
     overflow: visible;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     white-space: nowrap;
   }
 

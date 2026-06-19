@@ -180,8 +180,8 @@ const nt=t=>e=>"function"==typeof e?((t,e)=>(customElements.define(t,e),e))(t,e)
   }
   .flipdown.flipdown__theme-hass .btn-top,
   .flipdown.flipdown__theme-hass .btn-bottom {
-    background-color: var(--dark-primary-color);
-    color: var(--text-primary-color);
+    background-color: var(--flip-button-bg, var(--dark-primary-color));
+    color: var(--flip-button-color, var(--text-primary-color));
   }
   /********** Theme: dark **********/
   /* Font styles */
@@ -292,7 +292,8 @@ const nt=t=>e=>"function"==typeof e?((t,e)=>(customElements.define(t,e),e))(t,e)
 
   .flipdown {
     overflow: visible;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     white-space: nowrap;
   }
 
