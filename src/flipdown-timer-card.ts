@@ -272,11 +272,12 @@ export class FlipdownTimer extends LitElement {
       if (!this.fd) {
         this.fd = new FlipDown(new Date().getTime() / 1000, fddiv, {
           show_header: this.config.show_header,
-          show_hour: false,
+          show_hour: true,
           bt_location: 'hide',
           theme: this.config.theme,
           headings: this.config.localizeHeader,
           clock: true,
+          clock12: this.config.hour_format == 12 || this.config.hour_format == '12',
         })._init('clock');
         this.fd.start();
         fdComponent.push(this);

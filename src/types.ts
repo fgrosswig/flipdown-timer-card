@@ -17,4 +17,5 @@ export interface FlipdownTimerCardConfig extends LovelaceCardConfig {
   entity?: string;
   mode?: string;
   clock?: boolean;
+  hour_format?: string | number;
 }

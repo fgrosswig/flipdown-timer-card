@@ -201,6 +201,7 @@ export class FlipDown {
       showHour: opt.hasOwnProperty("show_hour") && opt.show_hour ? opt.show_hour : false,
       btLocation: opt.bt_location,
       clock: opt.hasOwnProperty("clock") && opt.clock ? true : false,
+      clock12: opt.hasOwnProperty("clock12") && opt.clock12 ? true : false,
       headings,
     };
   }
@@ -421,8 +422,13 @@ export class FlipDown {
     // (downward) flip animation. _sign stays true so the leaf flips forward.
     if (this.opts.clock) {
       const d = new Date();
+      let h = d.getHours();
+      if (this.opts.clock12) {
+        h = h % 12;
+        if (h === 0) h = 12;
+      }
       this.clockValues.d = 0;
-      this.clockValues.h = d.getHours();
+      this.clockValues.h = h;
       this.clockValues.m = d.getMinutes();
       this.clockValues.s = d.getSeconds();
       this._sign = true;
