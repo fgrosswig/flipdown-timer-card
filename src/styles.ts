@@ -122,6 +122,29 @@ export const styles = css`
     display: block;
   }
 
+  .timer-steps {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .timer-steps .step-btn {
+    width: 44px;
+    height: 36px;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    color: var(--flip-rotor-color, var(--text-primary-color));
+    background-color: var(--flip-rotor-bg, var(--primary-color));
+  }
+
+  .timer-steps .step-btn:active {
+    filter: brightness(1.2);
+  }
+
   .flipdown {
     overflow: visible;
     display: inline-block;

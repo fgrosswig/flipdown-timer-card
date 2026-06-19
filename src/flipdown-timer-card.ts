@@ -132,6 +132,32 @@ export class FlipdownTimer extends LitElement {
     return this.config?.mode === 'clock' || this.config?.clock === true;
   }
 
+  private _isTimerMode(): boolean {
+    if (this._isClock()) return false;
+    return this.config?.mode === 'timer' || !!this.config?.entity;
+  }
+
+  private _step(): number {
+    const s = Number(this.config?.step);
+    return Number.isFinite(s) && s > 0 ? s : 60;
+  }
+
+  // +/- adjust the timer duration while idle, using the rt/_tick override to
+  // repaint the rotors without a running countdown.
+  private _stepTimer(deltaSec: number): void {
+    if (!this.fd || !this.config.entity) return;
+    const state = this.hass.states[this.config.entity]?.state;
+    if (state !== 'idle') return;
+    const current =
+      this.fd.rt != null ? this.fd.rt : durationToSeconds(this._getRotorTime());
+    const max = 99 * 3600 + 59 * 60 + 59;
+    let next = current + deltaSec;
+    if (next < 0) next = 0;
+    if (next > max) next = max;
+    this.fd.rt = next;
+    this.fd._tick(true);
+  }
+
   public connectedCallback(): void {
     super.connectedCallback();
     if (this.config && this._isClock()) {
@@ -259,6 +285,22 @@ export class FlipdownTimer extends LitElement {
           ">
             <div id="flipdown" class="flipdown"></div>
           </div>
+          ${this._isTimerMode()
+            ? html`
+                <div class="timer-steps">
+                  <button
+                    class="step-btn"
+                    title="−${Math.round(this._step() / 60)} min"
+                    @click=${() => this._stepTimer(-this._step())}
+                  >−</button>
+                  <button
+                    class="step-btn"
+                    title="+${Math.round(this._step() / 60)} min"
+                    @click=${() => this._stepTimer(this._step())}
+                  >+</button>
+                </div>
+              `
+            : ''}
         </div>
       </ha-card>
     `;

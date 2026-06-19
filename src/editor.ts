@@ -76,6 +76,14 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
     return this._config?.entity || '';
   }
 
+  get _mode(): string {
+    return this._config?.mode || (this._config?.entity ? 'timer' : 'clock');
+  }
+
+  get _step(): string {
+    return this._config?.step !== undefined ? String(this._config.step) : '';
+  }
+
   get _show_title(): boolean {
     return this._config?.show_title || false;
   }
@@ -120,7 +128,17 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
           ? html`
               <div class="values">
                 <paper-dropdown-menu
-                  label="Entity (Required)"
+                  label="Mode"
+                  @value-changed=${this._valueChanged}
+                  .configValue=${'mode'}
+                >
+                  <paper-listbox slot="dropdown-content" .selected=${['timer', 'clock'].indexOf(this._mode)}>
+                    <paper-item>timer</paper-item>
+                    <paper-item>clock</paper-item>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+                <paper-dropdown-menu
+                  label="Entity (timer mode)"
                   @value-changed=${this._valueChanged}
                   .configValue=${'entity'}
                 >
@@ -132,6 +150,13 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
                     })}
                   </paper-listbox>
                 </paper-dropdown-menu>
+                <paper-input
+                  label="Step seconds (+/- buttons, default 60)"
+                  .value=${this._step}
+                  .configValue=${'step'}
+                  type="number"
+                  @value-changed=${this._valueChanged}
+                ></paper-input>
               </div>
             `
           : ''}
