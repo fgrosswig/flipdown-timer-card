@@ -331,8 +331,17 @@ export class FlipdownTimer extends LitElement {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const timeRemaining = new Date().getTime() / 1000;
 
+    // Guard: timer mode needs an existing entity. Without it, bail gracefully
+    // (no crash, no blank-on-error) until the entity shows up via a hass update.
+    const stateObj = this.config.entity ? this.hass?.states[this.config.entity] : undefined;
+    if (!stateObj) {
+      // eslint-disable-next-line no-console
+      console.warn('flipdown-timer-card: entity not found:', this.config.entity);
+      return;
+    }
+
     const domain = this.config.entity!.substring(0,this.config.entity!.indexOf('.'))
-    const state = this.hass.states[this.config.entity!].state;
+    const state = stateObj.state;
     let button_location;
 
     if (domain == 'timer') {
