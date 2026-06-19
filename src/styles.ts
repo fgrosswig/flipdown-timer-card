@@ -125,6 +125,7 @@ export const styles = css`
   .flipdown {
     overflow: visible;
     display: inline-block;
+    white-space: nowrap;
   }
 
   .flipdown .rotor-group {
