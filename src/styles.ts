@@ -17,21 +17,21 @@ export const styles = css`
   .flipdown.flipdown__theme-hass .rotor,
   .flipdown.flipdown__theme-hass .rotor-top,
   .flipdown.flipdown__theme-hass .rotor-leaf-front {
-    color: var(--text-primary-color);
-    background-color: var(--primary-color);
+    color: var(--flip-rotor-color, var(--text-primary-color));
+    background-color: var(--flip-rotor-bg, var(--primary-color));
   }
   /* Rotor bottoms */
   .flipdown.flipdown__theme-hass .rotor-bottom,
   .flipdown.flipdown__theme-hass .rotor-leaf-rear {
-    color: var(--text-primary-color);
-    background-color: var(--primary-color);
+    color: var(--flip-rotor-color, var(--text-primary-color));
+    background-color: var(--flip-rotor-bg, var(--primary-color));
   }
   /* Hinge */
   .flipdown.flipdown__theme-hass .rotor:after {
-    border-top: solid 1px var(--dark-primary-color);
+    border-top: solid 1px var(--flip-hinge-color, var(--dark-primary-color));
   }
   .flipdown.flipdown__theme-hass .delimeter span {
-    background-color: var(--primary-color);
+    background-color: var(--flip-delimiter-color, var(--flip-rotor-bg, var(--primary-color)));
   }
   .flipdown.flipdown__theme-hass .btn-top,
   .flipdown.flipdown__theme-hass .btn-bottom {
