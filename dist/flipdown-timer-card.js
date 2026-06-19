@@ -292,14 +292,14 @@ const nt=t=>e=>"function"==typeof e?((t,e)=>(customElements.define(t,e),e))(t,e)
 
   .flipdown {
     overflow: visible;
-    display: inline-flex;
-    align-items: center;
+    display: inline-block;
     white-space: nowrap;
   }
 
   .flipdown .rotor-group {
     position: relative;
     display: inline-block;
+    vertical-align: middle;
   }
 
   .flipdown .delimeter {
@@ -391,7 +391,8 @@ const nt=t=>e=>"function"==typeof e?((t,e)=>(customElements.define(t,e),e))(t,e)
   }
 
   .flipdown .button-group.button-right {
-    float: right;
+    display: inline-block;
+    vertical-align: middle;
     padding-left: var(--rotor-space, 20px);
   }
 
