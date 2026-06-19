@@ -128,8 +128,20 @@ export class FlipdownTimer extends LitElement {
     if(this.fd) this.fd.stop();
   }
 
+  private _isClock(): boolean {
+    return this.config?.mode === 'clock' || this.config?.clock === true;
+  }
+
   public connectedCallback(): void {
     super.connectedCallback();
+    if (this.config && this._isClock()) {
+      if (this.fd) {
+        this.fd.start();
+        fdComponent.push(this);
+        startInterval();
+      }
+      return;
+    }
     if (this.config && this.config.entity) {
       const stateObj = this.hass?.states[this.config!.entity];
       if (stateObj) {
@@ -202,6 +214,8 @@ export class FlipdownTimer extends LitElement {
   protected updated(changedProps: PropertyValues): void {
     super.updated(changedProps);
 
+    if (this._isClock()) return;
+
     if (changedProps.has("hass")) {
       const stateObj = this.hass!.states[this.config.entity!];
       const oldHass = changedProps.get("hass") as this["hass"];
@@ -251,10 +265,30 @@ export class FlipdownTimer extends LitElement {
   }
   protected _init(): void {
     const fddiv = this.shadowRoot?.getElementById('flipdown');
+    if (!fddiv) return;
+
+    // Clock mode: no entity, no buttons, self-ticking wall clock.
+    if (this._isClock()) {
+      if (!this.fd) {
+        this.fd = new FlipDown(new Date().getTime() / 1000, fddiv, {
+          show_header: this.config.show_header,
+          show_hour: false,
+          bt_location: 'hide',
+          theme: this.config.theme,
+          headings: this.config.localizeHeader,
+          clock: true,
+        })._init('clock');
+        this.fd.start();
+        fdComponent.push(this);
+        startInterval();
+      }
+      return;
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const timeRemaining = new Date().getTime() / 1000;
 
-    const domain = this.config.entity.substring(0,this.config.entity.indexOf('.'))
+    const domain = this.config.entity!.substring(0,this.config.entity!.indexOf('.'))
     const state = this.hass.states[this.config.entity!].state;
     let button_location;
 

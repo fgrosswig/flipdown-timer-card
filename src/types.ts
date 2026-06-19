@@ -14,5 +14,7 @@ export interface FlipdownTimerCardConfig extends LovelaceCardConfig {
   show_warning?: boolean;
   show_error?: boolean;
   test_gui?: boolean;
-  entity: string;
+  entity?: string;
+  mode?: string;
+  clock?: boolean;
 }

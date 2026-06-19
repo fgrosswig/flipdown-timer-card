@@ -200,6 +200,7 @@ export class FlipDown {
       showHeader: opt.hasOwnProperty("show_header") && opt.show_header ? opt.show_header : false,
       showHour: opt.hasOwnProperty("show_hour") && opt.show_hour ? opt.show_hour : false,
       btLocation: opt.bt_location,
+      clock: opt.hasOwnProperty("clock") && opt.clock ? true : false,
       headings,
     };
   }
@@ -415,6 +416,19 @@ export class FlipDown {
     // Get time now
 
     this.now = this._getTime();
+
+    // Clock mode: show current wall-clock time, counting UP with the normal
+    // (downward) flip animation. _sign stays true so the leaf flips forward.
+    if (this.opts.clock) {
+      const d = new Date();
+      this.clockValues.d = 0;
+      this.clockValues.h = d.getHours();
+      this.clockValues.m = d.getMinutes();
+      this.clockValues.s = d.getSeconds();
+      this._sign = true;
+      this._updateClockValues(false, reset);
+      return;
+    }
 
     // Between now and epoch
     //let diff = Math.floor(this.epoch - this.now <= 0 ? 0 : this.epoch - this.now);
