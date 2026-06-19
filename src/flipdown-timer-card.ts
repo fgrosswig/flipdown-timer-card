@@ -188,10 +188,13 @@ export class FlipdownTimer extends LitElement {
     if (state.state === 'active') {
       this.fd.button1.textContent = this.config.localizeBtn[1];
       this.fd.button2.textContent = this.config.localizeBtn[2];
-      let timeRemaining = durationToSeconds(state.attributes.remaining);
-      const madeActive = new Date(state.last_changed).getTime();
-      timeRemaining = Math.max(timeRemaining + madeActive / 1000, 0);
-      this.fd._updator(timeRemaining);
+      const remaining = Math.max(durationToSeconds(state.attributes.remaining), 0);
+      // Anchor the finish time to the BROWSER clock (not the server's
+      // last_changed). Server/browser skew otherwise inflated the first diff
+      // and caused a phantom +1s up-flip before the countdown started.
+      // The +0.99 keeps the first second on the start value instead of
+      // immediately dropping one.
+      this.fd._updator(this.fd._getTime() + remaining + 0.99);
       this.fd.start();
       fdComponent.push(this);
       startInterval();
